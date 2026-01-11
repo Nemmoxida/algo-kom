@@ -18,6 +18,7 @@ function generatePoints() {
 }
 
 export default function Home() {
+  const [target, setTarget] = useState({ x: 11, y: 11 });
   const [points, setPoints] = useState([
     // Group 1: 0-10
     { x: 1, y: 2 },
@@ -35,7 +36,6 @@ export default function Home() {
   const [resetKey, setResetKey] = useState(0);
 
   const kdTree = useMemo(() => buildKdTree(points), [points]);
-  const target = { x: 11, y: 11 };
   const kkn = nearestNeighbor(kdTree, target);
 
   const handleReset = () => {
@@ -51,8 +51,28 @@ export default function Home() {
       >
         Reset
       </button>
-      <div className=" absolute text-2xl text-black">
-        {`Target Point: [${target.x}, ${target.y}]`}
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 flex gap-2 items-center bg-white p-2 rounded shadow">
+        <span className="text-black">Target Point:</span>
+        <input
+          type="number"
+          value={target.x}
+          min={0}
+          max={20}
+          onChange={(e) =>
+            setTarget((t) => ({ ...t, x: Number(e.target.value) }))
+          }
+          className="border px-2 w-16"
+        />
+        <input
+          type="number"
+          value={target.y}
+          min={0}
+          max={20}
+          onChange={(e) =>
+            setTarget((t) => ({ ...t, y: Number(e.target.value) }))
+          }
+          className="border px-2 w-16"
+        />
       </div>
       <div className="h-fit flex flex-col outline-1 outline-black w-fit absolute left-30">
         <h1 className="text-black self-center">

@@ -1,5 +1,4 @@
-const target = { x: 5, y: 5 }; // example target point
-
+// calculate euclidean distance
 function distance(a, b) {
   return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 }
@@ -21,8 +20,10 @@ export default function nearestNeighbor(root, target) {
     const [first, second] =
       diff < 0 ? [node.left, node.right] : [node.right, node.left];
 
+    // right
     search(first);
 
+    // left
     if (Math.abs(diff) < best.dist) {
       search(second);
     }

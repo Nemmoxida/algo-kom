@@ -1,8 +1,7 @@
-// components/kdTree.js
 export default function buildKdTree(points, depth = 0) {
   if (!points || points.length === 0) return null;
 
-  const axis = depth % 2; // 0: x, 1: y
+  const axis = depth % 2;
   const sorted = [...points].sort((a, b) =>
     axis === 0 ? a.x - b.x : a.y - b.y
   );
