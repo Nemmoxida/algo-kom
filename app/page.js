@@ -1,65 +1,74 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useMemo } from "react";
+import XYPlane from "@/components/grid";
+import KdTreeViz from "@/components/tree";
+import buildKdTree from "@/components/kdTree";
+import rng from "@/components/rngLogic"; // Import your rng function
+import nearestNeighbor from "@/components/kkn";
+
+function generatePoints() {
+  const amouth = Math.floor(Math.random() * 17) + 3;
+
+  const points = [];
+  for (let i = 0; i < amouth; i += 1) {
+    points.push(rng());
+  }
+  return points;
+}
 
 export default function Home() {
+  const [points, setPoints] = useState([
+    // Group 1: 0-10
+    { x: 1, y: 2 },
+    { x: 3, y: 7 },
+    { x: 5, y: 1 },
+    { x: 2, y: 9 },
+    { x: 6, y: 4 },
+
+    // Group 2: 10-20
+    { x: 12, y: 15 },
+    { x: 14, y: 18 },
+    { x: 16, y: 12 },
+    { x: 13, y: 19 },
+  ]);
+  const [resetKey, setResetKey] = useState(0);
+
+  const kdTree = useMemo(() => buildKdTree(points), [points]);
+  const target = { x: 11, y: 11 };
+  const kkn = nearestNeighbor(kdTree, target);
+
+  const handleReset = () => {
+    setPoints(generatePoints());
+    setResetKey((k) => k + 1); // force re-mount for KdTreeViz if needed
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="bg-white h-screen flex justify-center items-center flex-col w-full">
+      <button
+        className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded"
+        onClick={handleReset}
+      >
+        Reset
+      </button>
+      <div className=" absolute text-2xl text-black">
+        {`Target Point: [${target.x}, ${target.y}]`}
+      </div>
+      <div className="h-fit flex flex-col outline-1 outline-black w-fit absolute left-30">
+        <h1 className="text-black self-center">
+          XY Plane – KD Tree Visualization
+        </h1>
+        <XYPlane
+          points={points}
+          kdTree={kdTree}
+          target={target}
+          nearest={kkn.point}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
+      <div className="h-fit flex outline-1 outline-black flex-col w-fit absolute right-30">
+        <h1 className="self-center">KD Tree Visualization</h1>
+        <KdTreeViz treeData={kdTree} nearest={kkn.point} key={resetKey} />
+      </div>
     </div>
   );
 }
