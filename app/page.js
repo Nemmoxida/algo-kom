@@ -20,14 +20,11 @@ function generatePoints() {
 export default function Home() {
   const [target, setTarget] = useState({ x: 11, y: 11 });
   const [points, setPoints] = useState([
-    // Group 1: 0-10
     { x: 1, y: 2 },
     { x: 3, y: 7 },
     { x: 5, y: 1 },
     { x: 2, y: 9 },
     { x: 6, y: 4 },
-
-    // Group 2: 10-20
     { x: 12, y: 15 },
     { x: 14, y: 18 },
     { x: 16, y: 12 },
@@ -87,7 +84,7 @@ export default function Home() {
       </div>
       <div className="h-fit flex outline-1 outline-black flex-col w-fit absolute right-30">
         <h1 className="self-center">KD Tree Visualization</h1>
-        <KdTreeViz treeData={kdTree} nearest={kkn.point} key={resetKey} />
+        <KdTreeViz treeData={kdTree} nearest={kkn.point} />
       </div>
     </div>
   );

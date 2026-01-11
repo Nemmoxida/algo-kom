@@ -16,6 +16,80 @@ function kdToHierarchy(node) {
 }
 
 export default function KdTreeViz({ treeData, nearest }) {
+  //   {
+  //     "point": {
+  //         "x": 6,
+  //         "y": 4
+  //     },
+  //     "axis": 0,
+  //     "left": {
+  //         "point": {
+  //             "x": 3,
+  //             "y": 7
+  //         },
+  //         "axis": 1,
+  //         "left": {
+  //             "point": {
+  //                 "x": 5,
+  //                 "y": 1
+  //             },
+  //             "axis": 0,
+  //             "left": {
+  //                 "point": {
+  //                     "x": 1,
+  //                     "y": 2
+  //                 },
+  //                 "axis": 1,
+  //                 "left": null,
+  //                 "right": null
+  //             },
+  //             "right": null
+  //         },
+  //         "right": {
+  //             "point": {
+  //                 "x": 2,
+  //                 "y": 9
+  //             },
+  //             "axis": 0,
+  //             "left": null,
+  //             "right": null
+  //         }
+  //     },
+  //     "right": {
+  //         "point": {
+  //             "x": 14,
+  //             "y": 18
+  //         },
+  //         "axis": 1,
+  //         "left": {
+  //             "point": {
+  //                 "x": 16,
+  //                 "y": 12
+  //             },
+  //             "axis": 0,
+  //             "left": {
+  //                 "point": {
+  //                     "x": 12,
+  //                     "y": 15
+  //                 },
+  //                 "axis": 1,
+  //                 "left": null,
+  //                 "right": null
+  //             },
+  //             "right": null
+  //         },
+  //         "right": {
+  //             "point": {
+  //                 "x": 13,
+  //                 "y": 19
+  //             },
+  //             "axis": 0,
+  //             "left": null,
+  //             "right": null
+  //         }
+  //     }
+  // }
+
   const ref = useRef();
 
   useEffect(() => {
@@ -76,7 +150,7 @@ export default function KdTreeViz({ treeData, nearest }) {
       .text((d) => d.data.name)
       .attr("font-size", 12)
       .attr("fill", "#222");
-  }, [treeData]);
+  }, [treeData, nearest]);
 
   return (
     <div>
